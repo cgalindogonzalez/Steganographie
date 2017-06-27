@@ -2,12 +2,13 @@ package steganographie.bmpfile;
 
 public class ImageFileHeader {
 	
-	private byte[] headerField; //to identify BMP file (2 bytes)
-	private byte[] fileSize; // size of the BMP file in bytes (4 bytes)
-	private byte[] reservedField; // actual value depends on the application that creates the image (4 bytes)
-	private byte[] offset; // starting address of the byte where the bitmap image data (pixel array) can be found.
+	private byte[] headerField = new byte[2]; //to identify BMP file
+	private byte[] fileSize = new byte[4]; // size of the BMP file in bytes
+	private byte[] reservedField = new byte[4]; // actual value depends on the application that creates the image 
+	private byte[] offset = new byte[4]; // starting address of the byte where the bitmap image data (pixel array) can be found.
 	
-
+	
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 

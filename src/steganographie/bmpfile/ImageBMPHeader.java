@@ -2,17 +2,17 @@ package steganographie.bmpfile;
 
 public class ImageBMPHeader {
 	
-	private byte[] headerSize; //the size of this header, i.e. 40 bytes (4 bytes)
-	private byte[] imageWidth; // the bitmap width in pixels (signed integer) (4 bytes)
-	private byte[] imageHeight; // the bitmap height in pixels (signed integer) (4 bytes)
-	private byte[] colorPlanes; // the number of color planes (must be 1) (2 bytes)
-	private byte[] colorDepth; // the number of bits per pixel, which is the color depth of the image. Typical values are 1, 4, 8, 16, 24 and 32 (2 bytes)
-	private byte[] compressionMethod; // the compression method being used (0 means non compression) (4 bytes)
-	private byte[] imageSize; // the image size. This is the size of the raw bitmap data (4 bytes)
-	private byte[] horizontalResolution; // pixel per meter, signed integer (4 bytes)
-	private byte[] verticalResolution; // pixel per meter, signed integer (4 bytes)
-	private byte[] paletteColors; // the number of colors in the color palette, or 0 to default to 2n (4 bytes)
- 	private byte[] importantColors; // the number of important colors used, or 0 when every color is important; generally ignored (4 bytes)
+	private byte[] headerSize = new byte[4]; //the size of this header, i.e. 40 bytes
+	private byte[] imageWidth = new byte[4]; // the bitmap width in pixels (signed integer)
+	private byte[] imageHeight = new byte[4]; // the bitmap height in pixels (signed integer)
+	private byte[] colorPlanes = new byte[2]; // the number of color planes (must be 1)
+	private byte[] colorDepth = new byte[2]; // the number of bits per pixel, which is the color depth of the image. Typical values are 1, 4, 8, 16, 24 and 32
+	private byte[] compressionMethod = new byte[4]; // the compression method being used (0 means non compression) 
+	private byte[] imageSize = new byte[4]; // the image size. This is the size of the raw bitmap data
+	private byte[] horizontalResolution = new byte[4]; // pixel per meter, signed integer 
+	private byte[] verticalResolution = new byte[4]; // pixel per meter, signed integer
+	private byte[] paletteColors = new byte[4]; // the number of colors in the color palette, or 0 to default to 2n 
+ 	private byte[] importantColors = new byte[4]; // the number of important colors used, or 0 when every color is important; generally ignored
 	
  	/**
  	 * getter

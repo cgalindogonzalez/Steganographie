@@ -1,7 +1,11 @@
 package steganographie.bmpfile;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -106,17 +110,37 @@ public class BMPReader {
 	 * read a bmp image file and....
 	 * @param file
 	 */
-	public void readBMPFile(File file) {
+	public static void readBMPFile(File file) {
+		int contador = 0;
 		try {
-			BufferedImage img = ImageIO.read(file);
+			FileInputStream fis = new FileInputStream(file);
+			BufferedInputStream buffer = new BufferedInputStream(fis);
+			DataInputStream data = new DataInputStream(buffer);
 			
-		} catch (IOException e) {
+			byte [] imageFileHeader = new byte[14];
+			byte [] imageBMPHeader = new byte[40];
+			
+			try {
+				data.read(imageFileHeader);
+				data.read(imageBMPHeader);
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 
-
+	public static void main (String[] args) {
+		readBMPFile(new File("src/Col5NPsSiSO300_m007.bmp"));
+		
+	}
 
 
 
