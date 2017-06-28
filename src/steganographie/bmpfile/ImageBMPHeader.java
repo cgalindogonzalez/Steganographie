@@ -1,6 +1,8 @@
 package steganographie.bmpfile;
 
-public class ImageBMPHeader {
+import java.io.BufferedInputStream;
+
+public class ImageBMPHeader extends BMPFileFraction {
 	
 	private byte[] headerSize = new byte[4]; //the size of this header, i.e. 40 bytes
 	private byte[] imageWidth = new byte[4]; // the bitmap width in pixels (signed integer)
@@ -22,6 +24,7 @@ public class ImageBMPHeader {
 		return this.headerSize;
 	}
  	
+	
  	/**
  	 * setter
  	 * @param headerSize
@@ -30,6 +33,7 @@ public class ImageBMPHeader {
 		this.headerSize = headerSize;
 	}
 
+	
 	/**
 	 * getter
 	 * @return imageWidth
@@ -38,6 +42,7 @@ public class ImageBMPHeader {
 		return this.imageWidth;
 	}
 
+	
 	/**
 	 * setter
 	 * @param imageWidth
@@ -54,6 +59,7 @@ public class ImageBMPHeader {
 		return this.imageHeight;
 	}
 
+	
 	/**
 	 * setter
 	 * @param imageHeight
@@ -69,7 +75,8 @@ public class ImageBMPHeader {
 	public byte[] getColorPlanes() {
 		return this.colorPlanes;
 	}
-
+	
+	
 	/**
 	 * setter
 	 * @param colorPlanes
@@ -86,6 +93,7 @@ public class ImageBMPHeader {
 		return this.colorDepth;
 	}
 
+	
 	/**
 	 * setter
 	 * @param colorDepth

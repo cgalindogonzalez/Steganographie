@@ -107,30 +107,43 @@ public class BMPReader {
 	}
 	
 	/**
-	 * read a bmp image file and....
+	 * read a bmp image file and 
 	 * @param file
 	 */
 	public static void readBMPFile(File file) {
-		int contador = 0;
+		//int contador = 0;
 		try {
 			FileInputStream fis = new FileInputStream(file);
 			BufferedInputStream buffer = new BufferedInputStream(fis);
-			DataInputStream data = new DataInputStream(buffer);
 			
-			byte [] imageFileHeader = new byte[14];
-			byte [] imageBMPHeader = new byte[40];
+			ImageFileHeader imageFileHeader = new ImageFileHeader();
+			ImageBMPHeader imageBMPHeader = new ImageBMPHeader();
+			ImageBody imageBody = new ImageBody();
 			
-			try {
-				data.read(imageFileHeader);
-				data.read(imageBMPHeader);
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			imageFileHeader.setHeaderField(imageFileHeader.readPartOfFile(buffer, 2));
+			imageFileHeader.setFileSize(imageFileHeader.readPartOfFile(buffer, 4));
+			imageFileHeader.setReservedField(imageFileHeader.readPartOfFile(buffer, 4));
+			imageFileHeader.setOffset(imageFileHeader.readPartOfFile(buffer, 4));
+
+			imageBMPHeader.setHeaderSize(imageBMPHeader.readPartOfFile(buffer, 4));
+			imageBMPHeader.setImageWidth(imageBMPHeader.readPartOfFile(buffer, 4));
+			imageBMPHeader.setImageHeight(imageBMPHeader.readPartOfFile(buffer, 4));
+			imageBMPHeader.setColorPlanes(imageBMPHeader.readPartOfFile(buffer, 2));
+			imageBMPHeader.setColorDepth(imageBMPHeader.readPartOfFile(buffer, 2));
+			imageBMPHeader.setCompressionMethod(imageBMPHeader.readPartOfFile(buffer, 4));
+			imageBMPHeader.setImageSize(imageBMPHeader.readPartOfFile(buffer, 4));
+			imageBMPHeader.setHorizontalResolution(imageBMPHeader.readPartOfFile(buffer, 4));
+			imageBMPHeader.setVerticalResolution(imageBMPHeader.readPartOfFile(buffer, 4));
+			imageBMPHeader.setPaletteColors(imageBMPHeader.readPartOfFile(buffer, 4));
+			imageBMPHeader.setImportantColors(imageBMPHeader.readPartOfFile(buffer, 4));
 			
+			buffer.close();
+			fis.close();
 			
 		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -138,7 +151,7 @@ public class BMPReader {
 	}
 
 	public static void main (String[] args) {
-		readBMPFile(new File("src/Col5NPsSiSO300_m007.bmp"));
+		//readBMPFile(new File("src/Col5NPsSiSO300_m007.bmp"));
 		
 	}
 
