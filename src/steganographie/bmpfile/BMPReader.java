@@ -107,10 +107,10 @@ public class BMPReader {
 	}
 	
 	/**
-	 * read a bmp image file and 
+	 * read a bmp image file and
 	 * @param file
 	 */
-	public static void readBMPFile(File file) {
+	public static void readHeadersBMPFile(File file) {
 		//int contador = 0;
 		try {
 			FileInputStream fis = new FileInputStream(file);
@@ -120,22 +120,22 @@ public class BMPReader {
 			ImageBMPHeader imageBMPHeader = new ImageBMPHeader();
 			ImageBody imageBody = new ImageBody();
 			
-			imageFileHeader.setHeaderField(imageFileHeader.readPartOfFile(buffer, 2));
-			imageFileHeader.setFileSize(imageFileHeader.readPartOfFile(buffer, 4));
-			imageFileHeader.setReservedField(imageFileHeader.readPartOfFile(buffer, 4));
-			imageFileHeader.setOffset(imageFileHeader.readPartOfFile(buffer, 4));
+			imageFileHeader.setHeaderField(imageFileHeader.getHeaderField(buffer));
+			imageFileHeader.setFileSize(imageFileHeader.getFileSize(buffer));
+			imageFileHeader.setReservedField(imageFileHeader.getReservedField(buffer));
+			imageFileHeader.setOffset(imageFileHeader.getOffset(buffer));
 
-			imageBMPHeader.setHeaderSize(imageBMPHeader.readPartOfFile(buffer, 4));
-			imageBMPHeader.setImageWidth(imageBMPHeader.readPartOfFile(buffer, 4));
-			imageBMPHeader.setImageHeight(imageBMPHeader.readPartOfFile(buffer, 4));
-			imageBMPHeader.setColorPlanes(imageBMPHeader.readPartOfFile(buffer, 2));
-			imageBMPHeader.setColorDepth(imageBMPHeader.readPartOfFile(buffer, 2));
-			imageBMPHeader.setCompressionMethod(imageBMPHeader.readPartOfFile(buffer, 4));
-			imageBMPHeader.setImageSize(imageBMPHeader.readPartOfFile(buffer, 4));
-			imageBMPHeader.setHorizontalResolution(imageBMPHeader.readPartOfFile(buffer, 4));
-			imageBMPHeader.setVerticalResolution(imageBMPHeader.readPartOfFile(buffer, 4));
-			imageBMPHeader.setPaletteColors(imageBMPHeader.readPartOfFile(buffer, 4));
-			imageBMPHeader.setImportantColors(imageBMPHeader.readPartOfFile(buffer, 4));
+			imageBMPHeader.setHeaderSize(imageBMPHeader.getHeaderSize(buffer));
+			imageBMPHeader.setImageWidth(imageBMPHeader.getImageHeight(buffer));
+			imageBMPHeader.setImageHeight(imageBMPHeader.getImageHeight(buffer));
+			imageBMPHeader.setColorPlanes(imageBMPHeader.getColorPlanes(buffer));
+			imageBMPHeader.setColorDepth(imageBMPHeader.getColorDepth(buffer));
+			imageBMPHeader.setCompressionMethod(imageBMPHeader.getCompressionMethod(buffer));
+			imageBMPHeader.setImageSize(imageBMPHeader.getImageSize(buffer));
+			imageBMPHeader.setHorizontalResolution(imageBMPHeader.getHorizontalResolution(buffer));
+			imageBMPHeader.setVerticalResolution(imageBMPHeader.getVerticalResolution(buffer));
+			imageBMPHeader.setPaletteColors(imageBMPHeader.getPaletteColors(buffer));
+			imageBMPHeader.setImportantColors(imageBMPHeader.getImportantColors(buffer));
 			
 			buffer.close();
 			fis.close();
@@ -148,6 +148,17 @@ public class BMPReader {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public void getImagePixels (File file) {
+		
+		try {
+			BufferedImage img = ImageIO.read(file);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	public static void main (String[] args) {

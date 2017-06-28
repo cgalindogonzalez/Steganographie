@@ -27,6 +27,15 @@ public class ImageFileHeader extends BMPFileFraction {
 		return this.headerField;
 	}
 	
+	/**
+	 * getter
+	 * @param bis
+	 * @return headerField
+	 */
+	public byte[] getHeaderField(BufferedInputStream bis) {
+		return readPartOfFile(bis, 2);
+	}
+	
 	
 	/**
 	 * setter
@@ -47,6 +56,16 @@ public class ImageFileHeader extends BMPFileFraction {
 
 	
 	/**
+	 * getter
+	 * @param bis
+	 * @return fileSize
+	 */
+	public byte[] getFileSize(BufferedInputStream bis) {
+		return readPartOfFile(bis, 4);
+	}
+	
+	
+	/**
 	 * setter
 	 * @param fileSize
 	 */
@@ -61,6 +80,15 @@ public class ImageFileHeader extends BMPFileFraction {
 	 */
 	public byte[] getReservedField() {
 		return this.reservedField;
+	}
+	
+	/**
+	 * getter
+	 * @param bis
+	 * @return reservedField
+	 */
+	public byte[] getReservedField(BufferedInputStream bis) {
+		return readPartOfFile(bis, 4);
 	}
 	
 	
@@ -81,6 +109,15 @@ public class ImageFileHeader extends BMPFileFraction {
 		return this.offset;
 	}
 
+	
+	/**
+	 * getter
+	 * @param bis
+	 * @return offset
+	 */
+	public byte[] getOffset(BufferedInputStream bis) {
+		return readPartOfFile(bis, 4);
+	}
 	
 	/**
 	 * setter
@@ -109,6 +146,15 @@ public class ImageFileHeader extends BMPFileFraction {
 		int size = byteArrayToInt(fileSize);
 		return size;
 	}
+	
+	
+	/**
+	 * get the value of the reservedField
+	 * @param offset
+	 * @return
+	 */
+	
+	
 	
 	/**
 	 * get the starting address of the byte where the bitmap image data (pixel array) can be found

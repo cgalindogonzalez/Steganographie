@@ -24,6 +24,15 @@ public class ImageBMPHeader extends BMPFileFraction {
 		return this.headerSize;
 	}
  	
+ 	/**
+	 * getter
+	 * @param bis
+	 * @return headerFSize
+	 */
+	public byte[] getHeaderSize(BufferedInputStream bis) {
+		return readPartOfFile(bis, 4);
+	}
+	
 	
  	/**
  	 * setter
@@ -42,6 +51,15 @@ public class ImageBMPHeader extends BMPFileFraction {
 		return this.imageWidth;
 	}
 
+	/**
+	 * getter
+	 * @param bis
+	 * @return imageWidth
+	 */
+	public byte[] getImageWidth(BufferedInputStream bis) {
+		return readPartOfFile(bis, 4);
+	}
+	
 	
 	/**
 	 * setter
@@ -59,6 +77,14 @@ public class ImageBMPHeader extends BMPFileFraction {
 		return this.imageHeight;
 	}
 
+	/**
+	 * getter
+	 * @param bis
+	 * @return imageHeight
+	 */
+	public byte[] getImageHeight(BufferedInputStream bis) {
+		return readPartOfFile(bis, 4);
+	}
 	
 	/**
 	 * setter
@@ -76,6 +102,14 @@ public class ImageBMPHeader extends BMPFileFraction {
 		return this.colorPlanes;
 	}
 	
+	/**
+	 * getter
+	 * @param bis
+	 * @return colorPlanes
+	 */
+	public byte[] getColorPlanes(BufferedInputStream bis) {
+		return readPartOfFile(bis, 2);
+	}
 	
 	/**
 	 * setter
@@ -93,6 +127,15 @@ public class ImageBMPHeader extends BMPFileFraction {
 		return this.colorDepth;
 	}
 
+	/**
+	 * getter
+	 * @param bis
+	 * @return colorDepth
+	 */
+	public byte[] getColorDepth(BufferedInputStream bis) {
+		return readPartOfFile(bis, 2);
+	}
+	
 	
 	/**
 	 * setter
@@ -111,6 +154,16 @@ public class ImageBMPHeader extends BMPFileFraction {
 	}
 
 	/**
+	 * getter
+	 * @param bis
+	 * @return compressionMethod
+	 */
+	public byte[] getCompressionMethod(BufferedInputStream bis) {
+		return readPartOfFile(bis, 4);
+	}
+	
+	
+	/**
 	 * setter
 	 * @param compressionMethod
 	 */
@@ -118,6 +171,7 @@ public class ImageBMPHeader extends BMPFileFraction {
 		this.compressionMethod = compressionMethod;
 	}
 
+	
 	/**
 	 * getter
 	 * @return imageSize
@@ -126,6 +180,16 @@ public class ImageBMPHeader extends BMPFileFraction {
 		return this.imageSize;
 	}
 
+	/**
+	 * getter
+	 * @param bis
+	 * @return imageSize
+	 */
+	public byte[] getImageSize(BufferedInputStream bis) {
+		return readPartOfFile(bis, 4);
+	}
+	
+	
 	/**
 	 * setter
 	 * @param imageSize
@@ -142,6 +206,17 @@ public class ImageBMPHeader extends BMPFileFraction {
 		return this.horizontalResolution;
 	}
 
+	
+	/**
+	 * getter
+	 * @param bis
+	 * @return horizontalResolution
+	 */
+	public byte[] getHorizontalResolution(BufferedInputStream bis) {
+		return readPartOfFile(bis, 4);
+	}
+	
+	
 	/**
 	 * setter
 	 * @param horizontalResolution
@@ -150,6 +225,7 @@ public class ImageBMPHeader extends BMPFileFraction {
 		this.horizontalResolution = horizontalResolution;
 	}
 
+	
 	/**
 	 * getter
 	 * @return verticalResolution
@@ -158,6 +234,16 @@ public class ImageBMPHeader extends BMPFileFraction {
 		return this.verticalResolution;
 	}
 
+	/**
+	 * getter
+	 * @param bis
+	 * @return verticalResolution
+	 */
+	public byte[] getVerticalResolution(BufferedInputStream bis) {
+		return readPartOfFile(bis, 4);
+	}
+	
+	
 	/**
 	 * setter
 	 * @param verticalResolution
@@ -175,6 +261,16 @@ public class ImageBMPHeader extends BMPFileFraction {
 	}
 
 	/**
+	 * getter
+	 * @param bis
+	 * @return paletteColors
+	 */
+	public byte[] getPaletteColors(BufferedInputStream bis) {
+		return readPartOfFile(bis, 4);
+	}
+	
+	
+	/**
 	 * setter
 	 * @param paletteColors
 	 */
@@ -190,6 +286,17 @@ public class ImageBMPHeader extends BMPFileFraction {
 		return this.importantColors;
 	}
 
+	
+	/**
+	 * getter
+	 * @param bis
+	 * @return importantColors
+	 */
+	public byte[] getImportantColors(BufferedInputStream bis) {
+		return readPartOfFile(bis, 4);
+	}
+	
+	
 	/**
 	 * setter
 	 * @param importantColors
