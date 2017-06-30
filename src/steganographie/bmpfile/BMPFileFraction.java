@@ -17,7 +17,7 @@ public class BMPFileFraction {
 	}
 	
 	/**
-	 * get a part of a file (using BufferedInputStream class) as a byte array
+	 * get a part of a file (using a BufferedInputStream object) as a byte array
 	 * @param bis 
 	 * @param i
 	 * @return 

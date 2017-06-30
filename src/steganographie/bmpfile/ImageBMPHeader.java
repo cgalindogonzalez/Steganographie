@@ -305,4 +305,106 @@ public class ImageBMPHeader extends BMPFileFraction {
 		this.importantColors = importantColors;
 	}
 	
+	/**
+	 * get the size of the bmp header from the byte array headerSize
+	 * @param headerSize
+	 * @return
+	 */
+	public int getSizeOfImageHeader (byte[] headerSize) {
+		int hSize = byteArrayToInt (headerSize);
+		return hSize;
+	}
+	
+	
+	/**
+	 * get the width of the image in pixels from the byte array imageWidth
+	 * @param imageWidth
+	 * @return
+	 */
+	public int getWidthOfTheImage (byte[] imageWidth) {
+		int width = byteArrayToInt (imageWidth);
+		return width;
+	}
+	
+	/**
+	 * get the height of the image in pixels from the byte array imageHeight
+	 * @param imageHeight
+	 * @return
+	 */
+	public int getHeightOfTheImage (byte[] imageHeight) {
+		int height = byteArrayToInt (imageHeight);
+		return height;
+	}
+	
+	/**
+	 * get the number of color planes from the byte array colorPlanes
+	 * @param colorPlanes
+	 * @return
+	 */
+	public int getNumberOfColorPlanes (byte[] colorPlanes) {
+		int nColorPlanes = byteArrayToInt (colorPlanes);
+		return nColorPlanes;
+	}
+	
+	/**
+	 * get the number of bits per pixel from the byte array colorDepth
+	 * @param colorDepth
+	 * @return
+	 */
+	public int getNumberOfBitsPerPixel (byte[] colorDepth) {
+		int bits = byteArrayToInt (colorDepth);
+		return bits;
+	}
+	
+	/**
+	 * get the compression method used (0 means non compression) from the byte array compressionMethod  
+	 * @param compressionMethod
+	 * @return
+	 */
+	public int getIndicativeOfCompressionMethod (byte[] compressionMethod) {
+		int compress = byteArrayToInt (compressionMethod);
+		return compress;
+	}
+	
+	
+	/**
+	 * get the horizontal resolution in pixel per meter from the byte array horizontalResolution  
+	 * @param horizontalResolution
+	 * @return
+	 */
+	public int getPixelesOfHorizontalResolution (byte[] horizontalResolution) {
+		int hResolution = byteArrayToInt (horizontalResolution);
+		return hResolution;
+	}
+	
+	/**
+	 * get the vertical resolution in pixel per meter from the byte array verticalResolution  
+	 * @param verticalResolution
+	 * @return
+	 */
+	public int getPixelesOfVerticalResolution (byte[] verticalResolution) {
+		int vResolution = byteArrayToInt (verticalResolution);
+		return vResolution;
+	}
+	
+	/**
+	 * get the number of colors in the color palette from the byte array paletteColors  
+	 * @param paletteColors
+	 * @return
+	 */
+	public int getNumberOfColorsInPalette (byte[] paletteColors) {
+		int nPaletteColors = byteArrayToInt (paletteColors);
+		return nPaletteColors;
+	}
+	
+	/**
+	 * get the number of important colors used from the byte array importantColors  
+	 * @param importantColors
+	 * @return
+	 */
+	public int getNumberOfImportantColors (byte[] importantColors) {
+		int nImportantColors = byteArrayToInt (importantColors);
+		return nImportantColors;
+	}
+	
 }

@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class BMPReader {
+public class BMPFile {
 	
 	private ImageFileHeader fileHeader; // 14 primeros bits
 	private ImageBMPHeader bmpHeader; // 50 siguientes
@@ -150,10 +150,19 @@ public class BMPReader {
 		
 	}
 	
+	/**
+	 * 
+	 * @param file
+	 */
 	public void getImagePixels (File file) {
 		
 		try {
 			BufferedImage img = ImageIO.read(file);
+			
+			ImageBody imageBody = new ImageBody();
+			
+			imageBody.setImage(imageBody.getImage(img));
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
