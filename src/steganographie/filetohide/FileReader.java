@@ -7,7 +7,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class FileReader {
-
+	
+	private byte[] pairOfBits;
+	
 	public byte[] readFile(File file) {
 		
 		//init array with file length
@@ -31,5 +33,10 @@ public class FileReader {
 		return fileByteArray;
 	}
 	
+	private byte[] getPairOfBitsFromByteArray(byte[] b) {
+		
+		
+		return null;
+	}
 
 }

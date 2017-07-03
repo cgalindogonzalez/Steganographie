@@ -2,7 +2,6 @@ package steganographie.bmpfile;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,9 +11,9 @@ import javax.imageio.ImageIO;
 
 public class BMPFile {
 	
-	private ImageFileHeader fileHeader; // 14 primeros bits
-	private ImageBMPHeader bmpHeader; // 50 siguientes
-	private ImageBody body; // el resto
+	private ImageFileHeader fileHeader; 
+	private ImageBMPHeader bmpHeader; 
+	private ImageBody body; 
 	private String pathDir;
 	private String fileName;
 	
@@ -110,35 +109,37 @@ public class BMPFile {
 	 * read a bmp image file and
 	 * @param file
 	 */
-	public static void readHeadersBMPFile(File file) {
+	public void readBMPFile(File file) {
 		//int contador = 0;
 		try {
 			FileInputStream fis = new FileInputStream(file);
 			BufferedInputStream buffer = new BufferedInputStream(fis);
 			
-			ImageFileHeader imageFileHeader = new ImageFileHeader();
-			ImageBMPHeader imageBMPHeader = new ImageBMPHeader();
-			ImageBody imageBody = new ImageBody();
-			
-			imageFileHeader.setHeaderField(imageFileHeader.getHeaderField(buffer));
-			imageFileHeader.setFileSize(imageFileHeader.getFileSize(buffer));
-			imageFileHeader.setReservedField(imageFileHeader.getReservedField(buffer));
-			imageFileHeader.setOffset(imageFileHeader.getOffset(buffer));
+			this.fileHeader.setHeaderField(this.fileHeader.getHeaderField(buffer));
+			this.fileHeader.setFileSize(this.fileHeader.getFileSize(buffer));
+			this.fileHeader.setReservedField(this.fileHeader.getReservedField(buffer));
+			this.fileHeader.setOffset(this.fileHeader.getOffset(buffer));
 
-			imageBMPHeader.setHeaderSize(imageBMPHeader.getHeaderSize(buffer));
-			imageBMPHeader.setImageWidth(imageBMPHeader.getImageHeight(buffer));
-			imageBMPHeader.setImageHeight(imageBMPHeader.getImageHeight(buffer));
-			imageBMPHeader.setColorPlanes(imageBMPHeader.getColorPlanes(buffer));
-			imageBMPHeader.setColorDepth(imageBMPHeader.getColorDepth(buffer));
-			imageBMPHeader.setCompressionMethod(imageBMPHeader.getCompressionMethod(buffer));
-			imageBMPHeader.setImageSize(imageBMPHeader.getImageSize(buffer));
-			imageBMPHeader.setHorizontalResolution(imageBMPHeader.getHorizontalResolution(buffer));
-			imageBMPHeader.setVerticalResolution(imageBMPHeader.getVerticalResolution(buffer));
-			imageBMPHeader.setPaletteColors(imageBMPHeader.getPaletteColors(buffer));
-			imageBMPHeader.setImportantColors(imageBMPHeader.getImportantColors(buffer));
+			this.bmpHeader.setHeaderSize(this.bmpHeader.getHeaderSize(buffer));
+			this.bmpHeader.setImageWidth(this.bmpHeader.getImageHeight(buffer));
+			this.bmpHeader.setImageHeight(this.bmpHeader.getImageHeight(buffer));
+			this.bmpHeader.setColorPlanes(this.bmpHeader.getColorPlanes(buffer));
+			this.bmpHeader.setColorDepth(this.bmpHeader.getColorDepth(buffer));
+			this.bmpHeader.setCompressionMethod(this.bmpHeader.getCompressionMethod(buffer));
+			this.bmpHeader.setImageSize(this.bmpHeader.getImageSize(buffer));
+			this.bmpHeader.setHorizontalResolution(this.bmpHeader.getHorizontalResolution(buffer));
+			this.bmpHeader.setVerticalResolution(this.bmpHeader.getVerticalResolution(buffer));
+			this.bmpHeader.setPaletteColors(this.bmpHeader.getPaletteColors(buffer));
+			this.bmpHeader.setImportantColors(this.bmpHeader.getImportantColors(buffer));
+			
+			//this.body.setImage(this.body.getImage(buffer));
 			
 			buffer.close();
 			fis.close();
+			
+			//mientras hago funcionar la linea anterior
+			BufferedImage img = ImageIO.read(file);			
+			body.setImage(body.getImage(img));
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -150,25 +151,7 @@ public class BMPFile {
 		
 	}
 	
-	/**
-	 * 
-	 * @param file
-	 */
-	public void getImagePixels (File file) {
-		
-		try {
-			BufferedImage img = ImageIO.read(file);
-			
-			ImageBody imageBody = new ImageBody();
-			
-			imageBody.setImage(imageBody.getImage(img));
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
-	}
 
 	public static void main (String[] args) {
 		//readBMPFile(new File("src/Col5NPsSiSO300_m007.bmp"));
