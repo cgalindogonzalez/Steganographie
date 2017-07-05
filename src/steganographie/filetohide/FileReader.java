@@ -1,9 +1,11 @@
 package steganographie.filetohide;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
@@ -67,7 +69,7 @@ public class FileReader {
 
 
 	/** 
-	 * get the required information to file recovery and reconstruction 
+	 * get the required information to subsequent file recovery and reconstruction 
 	 * @param file
 	 * @return
 	 */
@@ -86,12 +88,13 @@ public class FileReader {
 		ByteBuffer buf = ByteBuffer.wrap(informationSize);
 		buf.putLong(fileToHideSize);
 		
-		byte[] informationExtension = fileExtension.getBytes(); //es posible fijar tamaño máximo?
+		byte[] informationExtension = new byte[8];
+		informationExtension = fileExtension.getBytes(); //es posible fijar tamaño máximo?
 		
-		byte[] information = new byte[(8+informationExtension.length)];
+		byte[] information = new byte[(8+informationExtension.length)]; //16??
 		
 		System.arraycopy(informationSize, 0, information, 0, 8);
-		System.arraycopy(informationExtension, 0, information, 8, informationExtension.length);
+		System.arraycopy(informationExtension, 0, information, 8, informationExtension.length); //cambiar por 8?
 		
 		
 		return information;
@@ -159,7 +162,92 @@ public class FileReader {
 				pairOfBits[j+3] = (byte) (b[i]/64);	
 			}
 		}
+		
 		return pairOfBits;
 	}
+	
+	/**
+	 * get an array of bytes made up using four pairs of bits 
+	 * @param b
+	 * @return
+	 */
+	public byte[] getByteArrayFromPairOfBits (byte[] b) {
+		byte[] byteArray = new byte[(b.length)/4];
+		
+		for (int i = 0; i < b.length; i+=4 ) {
+			int b4 = b[i];
+			int b3 = b[i+1];
+			int b2 = b[i+2];
+			int b1 = b[i+3];
+			for (int j = 0; j< byteArray.length; j++) {
+				byteArray[j] = (byte) (b4 + b3*4 + b2*16 + b1*64);
+			}
+		}
+		
+		return byteArray;	
+	}
+	
+	/**
+	 * get the size of the file from the first eight bytes of the recovered array
+	 * @param b
+	 * @return
+	 */
+	public long getFileSizeFromRecoveredArray(byte[] b) {
+		byte[] sizeFileArray = new byte[8];
+		System.arraycopy(b, 0, sizeFileArray, 0, 8);
+		
+		long size = ByteBuffer.wrap(sizeFileArray).getLong();
+		return size;
+	}
+	
+	/**
+	 * get the extension of the file from the next ¿eight? bytes of the recovered array
+	 * @param b
+	 * @return
+	 */
+	public String getFileExtensionFromRecoveredArray (byte[] b) {
+		byte[] extensionFileArray = new byte[8]; // Es 8????
+		String str = new String (extensionFileArray);
+		
+		return str;
+	}
+	
+	/**
+	 * get the byte array with bytes of the file from the recovered array (that can be longer)
+	 * @param b
+	 * @param size
+	 * @return
+	 */
+	public byte[] getFileArrayFromRecoveredArray (byte[] b, long size) {
+		int length = (int) size;
+		byte[] fileArray = new byte[length];
+		System.arraycopy(b, 16, fileArray, 0, length);
+				
+		return fileArray;
+	}
 
+	/**
+	 * recover the file and save it with the name recovered_file into the folder where the image is
+	 * @param fileArray
+	 * @param pathFile
+	 * @param extension
+	 */
+	public void saveFile (byte[] fileArray, String pathFile, String extension) {
+		
+		String str = pathFile + System.getProperty("File.separator") + "recovered_file." + extension;
+		File file = new File(str);
+		
+		try {
+			FileOutputStream fos = new FileOutputStream(file);
+			BufferedOutputStream bos = new BufferedOutputStream(fos);
+			bos.write(fileArray);
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 }

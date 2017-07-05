@@ -210,6 +210,7 @@ public class BMPFileReader {
 //			byte [] imageBodyWithHiddenFile = this.getBody();
 //			bos.write(imageBodyWithHiddenFile);
 			
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

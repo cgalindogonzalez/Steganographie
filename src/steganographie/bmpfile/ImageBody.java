@@ -130,6 +130,39 @@ public class ImageBody extends BMPFileFraction {
 		return image;
 	}
 
+	/**
+	 * recover a byte array with the pair of less significant bits from the three bytes of each pixel of the image 
+	 * @param bi
+	 * @return
+	 */
+	public byte[] recoverHiddenBytesFromTheImage (BufferedImage bi) {
+		int width = bi.getWidth();
+		int height = bi.getHeight();
+		byte[] LSBarray = new byte[3*width*height];
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				int rgb = bi.getRGB(x, y);
+				Color color = new Color(rgb, true);
+				int red = color.getRed();
+				int green = color.getGreen();
+				int blue = color.getBlue();
+
+				int redLSB = red%4;
+				int greenLSB = green%4;
+				int blueLSB = blue%4;
+
+				int i = 3*(y + x*width);
+				LSBarray[i] = (byte) redLSB;
+				LSBarray[i+1] = (byte) greenLSB;
+				LSBarray[i+2] = (byte) blueLSB;
+				
+			}
+		}
+		
+		return LSBarray;
+		
+	}
+	
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
