@@ -2,14 +2,16 @@ package steganographie.bmpfile;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class BMPFile {
+public class BMPFileReader {
 	
 	private ImageFileHeader fileHeader; 
 	private ImageBMPHeader bmpHeader; 
@@ -106,11 +108,11 @@ public class BMPFile {
 	}
 	
 	/**
-	 * read a bmp image file and
+	 * read a bmp image file and divide it into his parts (file header, bmp header and body)
 	 * @param file
 	 */
 	public void readBMPFile(File file) {
-		//int contador = 0;
+
 		try {
 			FileInputStream fis = new FileInputStream(file);
 			BufferedInputStream buffer = new BufferedInputStream(fis);
@@ -152,9 +154,71 @@ public class BMPFile {
 	}
 	
 
+	public void rebuildAndSaveBMPImage(String name) {
+		String str = this.getPathDir() + System.getProperty("file.separator") + name + ".bmp";
+		File file = new File(str);
+		try {
+			FileOutputStream fos = new FileOutputStream(file);
+			BufferedOutputStream bos = new BufferedOutputStream(fos);
+			
+			byte [] headerFieldOfFileHeader = this.getFileHeader().getHeaderField();
+			bos.write(headerFieldOfFileHeader);
+			
+			byte [] fileSizeOfFileHeader = this.getFileHeader().getFileSize();
+			bos.write(fileSizeOfFileHeader);
+			
+			byte [] reservedFieldOfFileHeader = this.getFileHeader().getReservedField();
+			bos.write(reservedFieldOfFileHeader);
+			
+			byte [] offsetOfFileHeader = this.getFileHeader().getOffset();
+			bos.write(offsetOfFileHeader);
+			
+			byte [] headerSizeOfBMPHeader = this.getBmpHeader().getHeaderSize();
+			bos.write(headerSizeOfBMPHeader);
+			
+			byte [] imageWidthOfBMPHeader = this.getBmpHeader().getImageWidth();
+			bos.write(imageWidthOfBMPHeader);
+			
+			byte [] imageHeightOfBMPHeader = this.getBmpHeader().getImageHeight();
+			bos.write(imageHeightOfBMPHeader);
+			
+			byte [] colorPlanesOfBMPHeader = this.getBmpHeader().getColorPlanes();
+			bos.write(colorPlanesOfBMPHeader);
+			
+			byte [] colorDepthOfBMPHeader = this.getBmpHeader().getColorDepth();
+			bos.write(colorDepthOfBMPHeader);
+			
+			byte [] compressionMethodOfBMPHeader = this.getBmpHeader().getCompressionMethod();
+			bos.write(compressionMethodOfBMPHeader);
+			
+			byte [] imageSizeOfBMPHeader = this.getBmpHeader().getImageSize();
+			bos.write(imageSizeOfBMPHeader);
+			
+			byte [] horizontalResolutionOfBMPHeader = this.getBmpHeader().getHorizontalResolution();
+			bos.write(horizontalResolutionOfBMPHeader);
+
+			byte [] verticalResolutionOfBMPHeader = this.getBmpHeader().getVerticalResolution();
+			bos.write(verticalResolutionOfBMPHeader);
+			
+			byte [] paletteColorsOfBMPHeader = this.getBmpHeader().getPaletteColors();
+			bos.write(paletteColorsOfBMPHeader);
+			
+			byte [] importantColorsOfBMPHeader = this.getBmpHeader().getImportantColors();
+			bos.write(importantColorsOfBMPHeader);
+			
+			//Cuando cambie el bufferedImage por el byte[] estará bien
+//			byte [] imageBodyWithHiddenFile = this.getBody();
+//			bos.write(imageBodyWithHiddenFile);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 
 	public static void main (String[] args) {
-		//readBMPFile(new File("src/Col5NPsSiSO300_m007.bmp"));
+
 		
 	}
 

@@ -52,6 +52,11 @@ public class ImageBody extends BMPFileFraction {
 	}
 
 
+	/**
+	 * convert a buffered image into a byte array 
+	 * @param bi
+	 * @return
+	 */
 	public byte[] byteArrayFromImage(BufferedImage bi) {
 		
 		byte [] imageInByte = null;
@@ -71,6 +76,11 @@ public class ImageBody extends BMPFileFraction {
 
 	}
 
+	/**
+	 * convert a byte array into a buffered image
+	 * @param b
+	 * @return
+	 */
 	public BufferedImage imageFromByteArray(byte[] b) {
 		InputStream is = new ByteArrayInputStream(b);
 		BufferedImage bImageFromArray = null;
@@ -84,6 +94,11 @@ public class ImageBody extends BMPFileFraction {
 
 	}
 
+	/**
+	 * hide a file in the pixels of a buffered image
+	 * @param byteArray
+	 * @return
+	 */
 	public BufferedImage hideFileWithinPixelsOfImage (byte[] byteArray) {
 		int imageWidth = this.image.getWidth();
 		int imageHeight = this.image.getHeight();
@@ -113,9 +128,9 @@ public class ImageBody extends BMPFileFraction {
 			}
 		}
 		return image;
-
 	}
 
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 

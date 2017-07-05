@@ -11,12 +11,6 @@ public class ImageFileHeader extends BMPFileFraction {
 	private byte[] reservedField = new byte[4]; // actual value depends on the application that creates the image 
 	private byte[] offset = new byte[4]; // starting address of the byte where the bitmap image data (pixel array) can be found.
 	
-	
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
 
 
 	/**
@@ -166,7 +160,10 @@ public class ImageFileHeader extends BMPFileFraction {
 		return imageStartingByte;
 	}
 	
-	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
 	
 	
 }
