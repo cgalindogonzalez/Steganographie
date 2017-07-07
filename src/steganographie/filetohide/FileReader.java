@@ -94,16 +94,14 @@ public class FileReader {
 	public byte[] getFileInformationToReconstruction(File file) throws IOException {
 	
 		this.fileToHideSize = file.length();
-		//AÑADIR LO DEL TAMAÑO DE LA EXTENSION!!!
-	
 		this.fileExtension = Files.probeContentType(this.filePath);
-		
 		
 		byte[] informationSize = new byte[8];
 		ByteBuffer buf = ByteBuffer.wrap(informationSize);
 		buf.putLong(fileToHideSize);
 		
 		byte[] informationExtensionSize = {this.fileExtensionSize};
+		
 		byte[] informationExtension = new byte[this.fileExtensionSize];
 		informationExtension = fileExtension.getBytes(); 
 		
@@ -113,7 +111,6 @@ public class FileReader {
 		System.arraycopy(informationExtensionSize, 0, information, 8, 1);
 		System.arraycopy(informationExtension, 0, information, 9, informationExtension.length); 
 		
-		
 		return information;
 	}
 	
@@ -122,26 +119,18 @@ public class FileReader {
 	 * read a file and get an array with his bytes 
 	 * @param file
 	 * @return
+	 * @throws IOException 
 	 */
-	public byte[] readFile(File file) {
-		
+	public byte[] readFile(File file) throws IOException {
 		
 		byte[] fileByteArray = new byte[(int) file.length()];
 
-		try {
-			FileInputStream	fis = new FileInputStream(file);
-			BufferedInputStream buffer = new BufferedInputStream(fis);
-			buffer.read(fileByteArray); 
-			buffer.close();
-			fis.close(); 
+		FileInputStream	fis = new FileInputStream(file);
+		BufferedInputStream buffer = new BufferedInputStream(fis);
 
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		buffer.read(fileByteArray); 
+		buffer.close();
+		fis.close(); 
 
 		return fileByteArray;
 	}
