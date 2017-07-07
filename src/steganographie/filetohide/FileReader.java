@@ -15,8 +15,9 @@ public class FileReader {
 
 	private byte[] pairOfBits;
 	private long fileToHideSize;
+	private byte fileExtensionSize;
 	private String fileExtension; 
-	private Path filePath; //hecho para usarlo en el método q crea el array con la info (hace falta partir del fichero??)
+	private Path filePath; 
 	
 	/**
 	 * getter
@@ -67,34 +68,50 @@ public class FileReader {
 		this.fileExtension = fileExtension;
 	}
 
+	/**
+	 * getter
+	 * @return fileExtensionSize
+	 */
+	public byte getFileExtensionSize() {
+		return fileExtensionSize;
+	}
 
+	/**
+	 * setter
+	 * @param fileExtensionSize
+	 */
+	public void setFileExtensionSize(byte fileExtensionSize) {
+		this.fileExtensionSize = fileExtensionSize;
+	}
+
+	
 	/** 
 	 * get the required information to subsequent file recovery and reconstruction 
 	 * @param file
 	 * @return
+	 * @throws IOException 
 	 */
-	public byte[] getFileInformationToReconstruction(File file) {
+	public byte[] getFileInformationToReconstruction(File file) throws IOException {
 	
 		this.fileToHideSize = file.length();
+		//AÑADIR LO DEL TAMAÑO DE LA EXTENSION!!!
+	
+		this.fileExtension = Files.probeContentType(this.filePath);
 		
-		try {
-			this.fileExtension = Files.probeContentType(this.filePath);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		byte[] informationSize = new byte[8];
 		ByteBuffer buf = ByteBuffer.wrap(informationSize);
 		buf.putLong(fileToHideSize);
 		
-		byte[] informationExtension = new byte[8];
-		informationExtension = fileExtension.getBytes(); //es posible fijar tamaño máximo?
+		byte[] informationExtensionSize = {this.fileExtensionSize};
+		byte[] informationExtension = new byte[this.fileExtensionSize];
+		informationExtension = fileExtension.getBytes(); 
 		
-		byte[] information = new byte[(8+informationExtension.length)]; //16??
+		byte[] information = new byte[(9+informationExtension.length)]; 
 		
 		System.arraycopy(informationSize, 0, information, 0, 8);
-		System.arraycopy(informationExtension, 0, information, 8, informationExtension.length); //cambiar por 8?
+		System.arraycopy(informationExtensionSize, 0, information, 8, 1);
+		System.arraycopy(informationExtension, 0, information, 9, informationExtension.length); 
 		
 		
 		return information;
@@ -108,7 +125,7 @@ public class FileReader {
 	 */
 	public byte[] readFile(File file) {
 		
-		//init array with file length
+		
 		byte[] fileByteArray = new byte[(int) file.length()];
 
 		try {
@@ -154,13 +171,17 @@ public class FileReader {
 	 */
 	public byte[] getPairOfBitsFromByteArray(byte[] b) {
 		byte[] pairOfBits = new byte[(4*b.length)];
+		int j= 0;
 		for (int i = 0; i < b.length; i++) {
-			for (int j = 0; j < 4; j+=4) {
-				pairOfBits[j] = (byte) (b[i]%4);
-				pairOfBits[j+1] = (byte) ((b[i]/4)%4);
-				pairOfBits[j+2] = (byte) ((b[i]/16)%4);
-				pairOfBits[j+3] = (byte) (b[i]/64);	
-			}
+			pairOfBits[j] = (byte) (b[i] & 3);
+			//(byte) (b[i]%4);
+			pairOfBits[j+1] = (byte) ((b[i] & 12) >>> 2);
+					//(byte) ((b[i]/4)%4);
+			pairOfBits[j+2] = (byte) ((b[i] & 48) >>> 4);
+					//(byte) ((b[i]/16)%4);
+			pairOfBits[j+3] = (byte) ((b[i] & 192) >>> 6);
+			//(byte) (b[i]/64);	
+			j+= 4;
 		}
 		
 		return pairOfBits;

@@ -1,76 +1,50 @@
 package steganographie.bmpfile;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.RandomAccessFile;
 
 import javax.imageio.ImageIO;
 
-public class ImageBody extends BMPFileFraction {
+public class ImageBody {
 
-	//private byte[] image;
-	private BufferedImage image;
-	/**
-	 * getter
-	 * @return image
-	 */
-	public BufferedImage getImage() {
-		return this.image;
-	}
-
-	//	/**
-	//	 * getter
-	//	 * @param bi
-	//	 * @return image
-	//	 */
-	//	public byte[] getImage(BufferedInputStream bis) {
-	//		while()
-	//	}
+	private byte[] rawBytes;
 
 	/**
 	 * getter
-	 * @param bi
-	 * @return image
+	 * @return rawBytes
 	 */
-	public BufferedImage getImage(BufferedImage bi) {
-		this.image = bi;
-		return image;
+	public byte[] getRawBytes() {
+		return rawBytes;
 	}
 
 
 	/**
 	 * setter
-	 * @param image
+	 * @param rawBytes
 	 */
-	public void setImage(BufferedImage image) {
-		this.image = image;
+	public void setRawBytes(byte[] rawBytes) {
+		this.rawBytes = rawBytes;
 	}
 
-
+	
 	/**
 	 * convert a buffered image into a byte array 
 	 * @param bi
 	 * @return
+	 * @throws IOException 
 	 */
-	public byte[] byteArrayFromImage(BufferedImage bi) {
+	public byte[] byteArrayFromImage(BufferedImage bi) throws IOException {
 		
 		byte [] imageInByte = null;
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		
-		try {
-			ImageIO.write(bi, "jpg", baos);
-		baos.flush();
+		ImageIO.write(bi, "bmp", baos);
 		imageInByte = baos.toByteArray();
 		baos.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		return imageInByte;
 
@@ -80,95 +54,37 @@ public class ImageBody extends BMPFileFraction {
 	 * convert a byte array into a buffered image
 	 * @param b
 	 * @return
+	 * @throws IOException 
 	 */
-	public BufferedImage imageFromByteArray(byte[] b) {
+	public BufferedImage imageFromByteArray(byte[] b) throws IOException {
 		InputStream is = new ByteArrayInputStream(b);
-		BufferedImage bImageFromArray = null;
-		try {
-			 bImageFromArray= ImageIO.read(is);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return bImageFromArray;
-
-	}
-
-	/**
-	 * hide a file in the pixels of a buffered image
-	 * @param byteArray
-	 * @return
-	 */
-	public BufferedImage hideFileWithinPixelsOfImage (byte[] byteArray) {
-		int imageWidth = this.image.getWidth();
-		int imageHeight = this.image.getHeight();
-
-		for (int x = 0; x < imageWidth; x++) {
-			for (int y = 0; y < imageHeight; y++) {
-				int rgb = this.image.getRGB(x, y);
-				Color color = new Color(rgb, true);
-				int red = color.getRed();
-				int green = color.getGreen();
-				int blue = color.getBlue();
-
-				int redRounded = (red-red%4);
-				int greenRounded = (green-green%4);
-				int blueRounded = (blue-blue%4);
-
-				int i = (y + x*imageWidth);
-				while (byteArray.length < i) {
-					red = redRounded + byteArray[i];
-					green = greenRounded + byteArray[i+1];
-					blue = blueRounded + byteArray[i+2];
-					i+=3;
-				}
-				
-				Color newColor = new Color(red, green, blue);
-				this.image.setRGB(x, y, newColor.getRGB());
-			}
-		}
-		return image;
-	}
-
-	/**
-	 * recover a byte array with the pair of less significant bits from the three bytes of each pixel of the image 
-	 * @param bi
-	 * @return
-	 */
-	public byte[] recoverHiddenBytesFromTheImage (BufferedImage bi) {
-		int width = bi.getWidth();
-		int height = bi.getHeight();
-		byte[] LSBarray = new byte[3*width*height];
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				int rgb = bi.getRGB(x, y);
-				Color color = new Color(rgb, true);
-				int red = color.getRed();
-				int green = color.getGreen();
-				int blue = color.getBlue();
-
-				int redLSB = red%4;
-				int greenLSB = green%4;
-				int blueLSB = blue%4;
-
-				int i = 3*(y + x*width);
-				LSBarray[i] = (byte) redLSB;
-				LSBarray[i+1] = (byte) greenLSB;
-				LSBarray[i+2] = (byte) blueLSB;
-				
-			}
-		}
 		
-		return LSBarray;
-		
+		return ImageIO.read(is);
 	}
+
 	
 	
+	
+	
+
+	public void read(RandomAccessFile raf, int offset, int size) throws IOException {
+		this.rawBytes = new byte[size];
+		raf.seek(offset);
+		raf.read(this.rawBytes);
+	}
+
+
+	public void write(RandomAccessFile raf, int offset) throws IOException {
+		if (this.rawBytes == null) 
+			throw new IllegalStateException("no puedes hacer write si antes no has inicializado rawBytes");
+		raf.seek(offset);
+		raf.write(this.rawBytes);
+	}
+	
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
 	}
-
-
 
 }

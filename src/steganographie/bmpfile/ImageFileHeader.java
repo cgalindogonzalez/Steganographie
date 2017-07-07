@@ -1,10 +1,10 @@
 package steganographie.bmpfile;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 
-public class ImageFileHeader extends BMPFileFraction {
+public class ImageFileHeader {
 	
 	private byte[] headerField = new byte[2]; //to identify BMP file
 	private byte[] fileSize = new byte[4]; // size of the BMP file in bytes
@@ -19,15 +19,6 @@ public class ImageFileHeader extends BMPFileFraction {
 	 */
 	public byte[] getHeaderField() {
 		return this.headerField;
-	}
-	
-	/**
-	 * getter
-	 * @param bis
-	 * @return headerField
-	 */
-	public byte[] getHeaderField(BufferedInputStream bis) {
-		return readPartOfFile(bis, 2);
 	}
 	
 	
@@ -49,14 +40,6 @@ public class ImageFileHeader extends BMPFileFraction {
 	}
 
 	
-	/**
-	 * getter
-	 * @param bis
-	 * @return fileSize
-	 */
-	public byte[] getFileSize(BufferedInputStream bis) {
-		return readPartOfFile(bis, 4);
-	}
 	
 	
 	/**
@@ -76,14 +59,7 @@ public class ImageFileHeader extends BMPFileFraction {
 		return this.reservedField;
 	}
 	
-	/**
-	 * getter
-	 * @param bis
-	 * @return reservedField
-	 */
-	public byte[] getReservedField(BufferedInputStream bis) {
-		return readPartOfFile(bis, 4);
-	}
+
 	
 	
 	/**
@@ -104,15 +80,7 @@ public class ImageFileHeader extends BMPFileFraction {
 	}
 
 	
-	/**
-	 * getter
-	 * @param bis
-	 * @return offset
-	 */
-	public byte[] getOffset(BufferedInputStream bis) {
-		return readPartOfFile(bis, 4);
-	}
-	
+
 	/**
 	 * setter
 	 * @param offset
@@ -122,12 +90,40 @@ public class ImageFileHeader extends BMPFileFraction {
 	}
 
 	/**
+	 * 
+	 * @param raf
+	 * @throws IOException
+	 */
+	public void read(RandomAccessFile raf) throws IOException {
+		raf.seek(0);
+		raf.read(this.headerField);
+		raf.read(this.fileSize);
+		raf.read(this.reservedField);
+		raf.read(this.offset);
+		
+	}
+	
+	/**
+	 * 
+	 * @param raf
+	 * @throws IOException
+	 */
+	public void write(RandomAccessFile raf) throws IOException {
+		raf.seek(0);
+		raf.write(this.headerField);;
+		raf.write(this.fileSize);
+		raf.write(this.reservedField);
+		raf.write(this.offset);
+		
+	}
+	
+	/**
 	 * get the file type from the byte array headerFile
 	 * @param headerFile
 	 * @return
 	 */
-	public String getType (byte[] headerFile) {
-		String str = new String(headerFile);
+	public String decodeType () {
+		String str = new String(this.headerField);
 		return str;	
 	}
 	
@@ -136,18 +132,9 @@ public class ImageFileHeader extends BMPFileFraction {
 	 * @param fileSize
 	 * @return
 	 */
-	public int getSize (byte[] fileSize) {
-		int size = byteArrayToInt(fileSize);
-		return size;
+	public int decodeSize () {
+		return ByteBuffer.wrap(this.fileSize).getInt();
 	}
-	
-	
-	/**
-	 * get the value of the reservedField
-	 * @param offset
-	 * @return
-	 */
-	
 	
 	
 	/**
@@ -155,10 +142,10 @@ public class ImageFileHeader extends BMPFileFraction {
 	 * @param offset
 	 * @return
 	 */
-	public int getByteOffset (byte[] offset) {
-		int imageStartingByte = byteArrayToInt (offset);
-		return imageStartingByte;
+	public int decodeOffset () {
+		return ByteBuffer.wrap(this.offset).getInt();
 	}
+	
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

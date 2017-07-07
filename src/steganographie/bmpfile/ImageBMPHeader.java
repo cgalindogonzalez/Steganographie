@@ -1,8 +1,10 @@
 package steganographie.bmpfile;
 
-import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 
-public class ImageBMPHeader extends BMPFileFraction {
+public class ImageBMPHeader {
 	
 	private byte[] headerSize = new byte[4]; //the size of this header, i.e. 40 bytes
 	private byte[] imageWidth = new byte[4]; // the bitmap width in pixels (signed integer)
@@ -23,15 +25,6 @@ public class ImageBMPHeader extends BMPFileFraction {
  	public byte[] getHeaderSize() {
 		return this.headerSize;
 	}
- 	
- 	/**
-	 * getter
-	 * @param bis
-	 * @return headerFSize
-	 */
-	public byte[] getHeaderSize(BufferedInputStream bis) {
-		return readPartOfFile(bis, 4);
-	}
 	
 	
  	/**
@@ -49,15 +42,6 @@ public class ImageBMPHeader extends BMPFileFraction {
 	 */
 	public byte[] getImageWidth() {
 		return this.imageWidth;
-	}
-
-	/**
-	 * getter
-	 * @param bis
-	 * @return imageWidth
-	 */
-	public byte[] getImageWidth(BufferedInputStream bis) {
-		return readPartOfFile(bis, 4);
 	}
 	
 	
@@ -77,14 +61,7 @@ public class ImageBMPHeader extends BMPFileFraction {
 		return this.imageHeight;
 	}
 
-	/**
-	 * getter
-	 * @param bis
-	 * @return imageHeight
-	 */
-	public byte[] getImageHeight(BufferedInputStream bis) {
-		return readPartOfFile(bis, 4);
-	}
+
 	
 	/**
 	 * setter
@@ -102,14 +79,7 @@ public class ImageBMPHeader extends BMPFileFraction {
 		return this.colorPlanes;
 	}
 	
-	/**
-	 * getter
-	 * @param bis
-	 * @return colorPlanes
-	 */
-	public byte[] getColorPlanes(BufferedInputStream bis) {
-		return readPartOfFile(bis, 2);
-	}
+	
 	
 	/**
 	 * setter
@@ -125,15 +95,6 @@ public class ImageBMPHeader extends BMPFileFraction {
 	 */
 	public byte[] getColorDepth() {
 		return this.colorDepth;
-	}
-
-	/**
-	 * getter
-	 * @param bis
-	 * @return colorDepth
-	 */
-	public byte[] getColorDepth(BufferedInputStream bis) {
-		return readPartOfFile(bis, 2);
 	}
 	
 	
@@ -153,15 +114,6 @@ public class ImageBMPHeader extends BMPFileFraction {
 		return this.compressionMethod;
 	}
 
-	/**
-	 * getter
-	 * @param bis
-	 * @return compressionMethod
-	 */
-	public byte[] getCompressionMethod(BufferedInputStream bis) {
-		return readPartOfFile(bis, 4);
-	}
-	
 	
 	/**
 	 * setter
@@ -179,15 +131,6 @@ public class ImageBMPHeader extends BMPFileFraction {
 	public byte[] getImageSize() {
 		return this.imageSize;
 	}
-
-	/**
-	 * getter
-	 * @param bis
-	 * @return imageSize
-	 */
-	public byte[] getImageSize(BufferedInputStream bis) {
-		return readPartOfFile(bis, 4);
-	}
 	
 	
 	/**
@@ -204,16 +147,6 @@ public class ImageBMPHeader extends BMPFileFraction {
 	 */
 	public byte[] getHorizontalResolution() {
 		return this.horizontalResolution;
-	}
-
-	
-	/**
-	 * getter
-	 * @param bis
-	 * @return horizontalResolution
-	 */
-	public byte[] getHorizontalResolution(BufferedInputStream bis) {
-		return readPartOfFile(bis, 4);
 	}
 	
 	
@@ -233,15 +166,6 @@ public class ImageBMPHeader extends BMPFileFraction {
 	public byte[] getVerticalResolution() {
 		return this.verticalResolution;
 	}
-
-	/**
-	 * getter
-	 * @param bis
-	 * @return verticalResolution
-	 */
-	public byte[] getVerticalResolution(BufferedInputStream bis) {
-		return readPartOfFile(bis, 4);
-	}
 	
 	
 	/**
@@ -258,15 +182,6 @@ public class ImageBMPHeader extends BMPFileFraction {
 	 */
 	public byte[] getPaletteColors() {
 		return this.paletteColors;
-	}
-
-	/**
-	 * getter
-	 * @param bis
-	 * @return paletteColors
-	 */
-	public byte[] getPaletteColors(BufferedInputStream bis) {
-		return readPartOfFile(bis, 4);
 	}
 	
 	
@@ -288,16 +203,6 @@ public class ImageBMPHeader extends BMPFileFraction {
 
 	
 	/**
-	 * getter
-	 * @param bis
-	 * @return importantColors
-	 */
-	public byte[] getImportantColors(BufferedInputStream bis) {
-		return readPartOfFile(bis, 4);
-	}
-	
-	
-	/**
 	 * setter
 	 * @param importantColors
 	 */
@@ -310,9 +215,8 @@ public class ImageBMPHeader extends BMPFileFraction {
 	 * @param headerSize
 	 * @return
 	 */
-	public int getSizeOfImageHeader (byte[] headerSize) {
-		int hSize = byteArrayToInt (headerSize);
-		return hSize;
+	public int decodeSizeOfImageHeader () {
+		return ByteBuffer.wrap(this.headerSize).getInt();
 	}
 	
 	
@@ -321,9 +225,8 @@ public class ImageBMPHeader extends BMPFileFraction {
 	 * @param imageWidth
 	 * @return
 	 */
-	public int getWidthOfTheImage (byte[] imageWidth) {
-		int width = byteArrayToInt (imageWidth);
-		return width;
+	public int decodeImageWidth () {
+		return ByteBuffer.wrap(this.imageWidth).getInt();
 	}
 	
 	/**
@@ -331,9 +234,8 @@ public class ImageBMPHeader extends BMPFileFraction {
 	 * @param imageHeight
 	 * @return
 	 */
-	public int getHeightOfTheImage (byte[] imageHeight) {
-		int height = byteArrayToInt (imageHeight);
-		return height;
+	public int decodeImageHeight () {
+		return ByteBuffer.wrap(this.imageHeight).getInt();
 	}
 	
 	/**
@@ -341,9 +243,8 @@ public class ImageBMPHeader extends BMPFileFraction {
 	 * @param colorPlanes
 	 * @return
 	 */
-	public int getNumberOfColorPlanes (byte[] colorPlanes) {
-		int nColorPlanes = byteArrayToInt (colorPlanes);
-		return nColorPlanes;
+	public int decodeColorPlanes () {
+		return ByteBuffer.wrap(this.colorPlanes).getInt();
 	}
 	
 	/**
@@ -351,9 +252,8 @@ public class ImageBMPHeader extends BMPFileFraction {
 	 * @param colorDepth
 	 * @return
 	 */
-	public int getNumberOfBitsPerPixel (byte[] colorDepth) {
-		int bits = byteArrayToInt (colorDepth);
-		return bits;
+	public int decodeImageNumber () {
+		return ByteBuffer.wrap(this.colorDepth).getInt();
 	}
 	
 	/**
@@ -361,9 +261,16 @@ public class ImageBMPHeader extends BMPFileFraction {
 	 * @param compressionMethod
 	 * @return
 	 */
-	public int getIndicativeOfCompressionMethod (byte[] compressionMethod) {
-		int compress = byteArrayToInt (compressionMethod);
-		return compress;
+	public int decodeCompressionMethod () {
+		return ByteBuffer.wrap(this.compressionMethod).getInt();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int decodeImageSize() {
+		return ByteBuffer.wrap(this.imageSize).getInt();
 	}
 	
 	
@@ -372,19 +279,18 @@ public class ImageBMPHeader extends BMPFileFraction {
 	 * @param horizontalResolution
 	 * @return
 	 */
-	public int getPixelesOfHorizontalResolution (byte[] horizontalResolution) {
-		int hResolution = byteArrayToInt (horizontalResolution);
-		return hResolution;
+	public int decodeHorizontalResolution () {
+		return ByteBuffer.wrap(this.horizontalResolution).getInt();
 	}
+	
 	
 	/**
 	 * get the vertical resolution in pixel per meter from the byte array verticalResolution  
 	 * @param verticalResolution
 	 * @return
 	 */
-	public int getPixelesOfVerticalResolution (byte[] verticalResolution) {
-		int vResolution = byteArrayToInt (verticalResolution);
-		return vResolution;
+	public int decodeVerticalResolution () {
+		return ByteBuffer.wrap(this.verticalResolution).getInt();
 	}
 	
 	/**
@@ -392,9 +298,8 @@ public class ImageBMPHeader extends BMPFileFraction {
 	 * @param paletteColors
 	 * @return
 	 */
-	public int getNumberOfColorsInPalette (byte[] paletteColors) {
-		int nPaletteColors = byteArrayToInt (paletteColors);
-		return nPaletteColors;
+	public int decodePaletteColors () {
+		return ByteBuffer.wrap(this.paletteColors).getInt();
 	}
 	
 	/**
@@ -402,9 +307,51 @@ public class ImageBMPHeader extends BMPFileFraction {
 	 * @param importantColors
 	 * @return
 	 */
-	public int getNumberOfImportantColors (byte[] importantColors) {
-		int nImportantColors = byteArrayToInt (importantColors);
-		return nImportantColors;
+	public int decodeImportantColors () {
+		return ByteBuffer.wrap(this.importantColors).getInt();
+	}
+
+	/**
+	 * 
+	 * @param raf
+	 * @throws IOException
+	 */
+	public void read(RandomAccessFile raf) throws IOException {
+		raf.seek(14);
+		raf.read(this.headerSize);
+		raf.read(this.imageWidth);
+		raf.read(this.imageHeight);
+		raf.read(this.colorPlanes);
+		raf.read(this.colorDepth);
+		raf.read(this.compressionMethod);
+		raf.read(this.imageSize);
+		raf.read(this.horizontalResolution);
+		raf.read(this.verticalResolution);
+		raf.read(this.paletteColors);
+		raf.read(this.importantColors);
+		
+		
+	}
+
+	/**
+	 * 
+	 * @param raf
+	 * @throws IOException
+	 */
+	public void write(RandomAccessFile raf) throws IOException {
+		raf.seek(14);
+		raf.write(this.headerSize);
+		raf.write(this.imageWidth);
+		raf.write(this.imageHeight);
+		raf.write(this.colorPlanes);
+		raf.write(this.colorDepth);
+		raf.write(this.compressionMethod);
+		raf.write(this.imageSize);
+		raf.write(this.horizontalResolution);
+		raf.write(this.verticalResolution);
+		raf.write(this.paletteColors);
+		raf.write(this.importantColors);
+		
 	}
 	
 }
