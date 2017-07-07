@@ -84,6 +84,20 @@ public class FileReader {
 		this.fileExtensionSize = fileExtensionSize;
 	}
 
+	/**
+	 * 
+	 * @param path
+	 * @return
+	 */
+	public String getFileExtension (Path path) {
+		String name = path.toString();
+	    try {
+	        return name.substring(name.lastIndexOf(".") + 1);
+	    } catch (Exception e) {
+	        return "";
+	    }
+	}
+	
 	
 	/** 
 	 * get the required information to subsequent file recovery and reconstruction 
@@ -94,7 +108,7 @@ public class FileReader {
 	public byte[] getFileInformationToReconstruction(File file, Path path) throws IOException {
 	
 		this.fileToHideSize = file.length();
-		this.fileExtension = Files.probeContentType(file.toPath());
+		this.fileExtension = getFileExtension(path);
 		this.fileExtensionSize = (byte) fileExtension.length();
 		
 		byte[] informationSize = new byte[8];

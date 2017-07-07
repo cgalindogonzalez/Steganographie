@@ -1,6 +1,13 @@
 package steganographie.bmpfile;
 
+import java.awt.Transparency;
+import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.ComponentColorModel;
+import java.awt.image.DataBuffer;
+import java.awt.image.DataBufferByte;
+import java.awt.image.Raster;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -56,13 +63,25 @@ public class ImageBody {
 	 * @return
 	 * @throws IOException 
 	 */
-	public BufferedImage imageFromByteArray(byte[] b) throws IOException {
-		InputStream is = new ByteArrayInputStream(b);
-		
-		return ImageIO.read(is);
+//	public BufferedImage imageFromByteArray(byte[] b) throws IOException {
+//		BufferedImage image = createRGBImage(bytes, width, height);
+//
+//		try {
+//		    ImageIO.write(image, "BMP", stream);
+//		}
+//		finally {
+//		    stream.close();
+//		}
+//		
+//		return ImageIO.read(is);
+//	}
+
+	public BufferedImage imageFromByteArray(byte[] bytes, int width, int height) {
+	    DataBufferByte buffer = new DataBufferByte(bytes, bytes.length);
+	    ColorModel cm = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB), new int[]{8, 8, 8}, false, false, Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
+	    return new BufferedImage(cm, Raster.createInterleavedRaster(buffer, width, height, width * 3, 3, new int[]{0, 1, 2}, null), false, null);
 	}
 
-	
 	
 	
 	

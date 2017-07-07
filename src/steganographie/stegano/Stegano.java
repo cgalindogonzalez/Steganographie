@@ -60,7 +60,7 @@ public class Stegano {
 			else {
 				//hide the file within the pixels of the image
 				byte[] rawBytesImage = bmpFileReader.getBody().getRawBytes();
-				BufferedImage bImage = bmpFileReader.getBody().imageFromByteArray(rawBytesImage);
+				BufferedImage bImage = bmpFileReader.getBody().imageFromByteArray(rawBytesImage, width, height);
 				BufferedImage bImageWithFile = hideFileWithinPixelsOfImage (bImage, pairOfBitsArray);
 				byte[] rawBytesImageWithFile = bmpFileReader.getBody().byteArrayFromImage(bImageWithFile);
 				bmpFileReader.getBody().setRawBytes(rawBytesImageWithFile);
@@ -101,7 +101,10 @@ public class Stegano {
 		if (BMPIdentifierEnum.getEnums().contains(bmpIdentifier) && (bitsPerPixel == 24)){
 			
 			byte[] rawImage = bmpFileReader.getBody().getRawBytes();
-			BufferedImage bImage = bmpFileReader.getBody().imageFromByteArray(rawImage);
+			int width = bmpFileReader.getBmpHeader().decodeImageWidth(); 
+			int height = bmpFileReader.getBmpHeader().decodeImageHeight();
+			
+			BufferedImage bImage = bmpFileReader.getBody().imageFromByteArray(rawImage, width, height);
 			byte[] pairOfBitsToRecoverTheFile = recoverHiddenBytesFromTheImage(bImage);
 			
 			FileReader fileReader = new FileReader();
@@ -137,8 +140,8 @@ public class Stegano {
 	public BufferedImage hideFileWithinPixelsOfImage (BufferedImage image, byte[] byteArray) {
 		int imageWidth = image.getWidth();
 		int imageHeight = image.getHeight();
-		int imageType = image.getType();
-		BufferedImage newImage = new BufferedImage (imageWidth, imageHeight, imageType);
+		
+		BufferedImage newImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_3BYTE_BGR);
 
 		for (int x = 0; x < imageWidth; x++) {
 			for (int y = 0; y < imageHeight; y++) {
