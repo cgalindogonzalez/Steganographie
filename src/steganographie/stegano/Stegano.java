@@ -45,8 +45,8 @@ public class Stegano {
 
 			FileReader fileReader = new FileReader();
 			File file = fileToHide.toFile();
-
-			byte[] fileInformation = fileReader.getFileInformationToReconstruction(file); //get the byte array with the information of the file to hide 
+			
+			byte[] fileInformation = fileReader.getFileInformationToReconstruction(file, fileToHide); //get the byte array with the information of the file to hide 
 			byte[] readFileArray = fileReader.readFile(file); //get the byte array with the bytes of the file to hide
 			byte[] fileArray = fileReader.concatenateInformationReadArrays(fileInformation, readFileArray); //concatenate both arrays 
 			byte[] pairOfBitsArray = fileReader.getPairOfBitsFromByteArray(fileArray);

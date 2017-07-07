@@ -3,6 +3,7 @@ package steganographie.bmpfile;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 public class ImageBMPHeader {
 	
@@ -216,7 +217,7 @@ public class ImageBMPHeader {
 	 * @return
 	 */
 	public int decodeSizeOfImageHeader () {
-		return ByteBuffer.wrap(this.headerSize).getInt();
+		return ByteBuffer.wrap(this.headerSize).order(ByteOrder.LITTLE_ENDIAN).getInt();
 	}
 	
 	
@@ -226,7 +227,7 @@ public class ImageBMPHeader {
 	 * @return
 	 */
 	public int decodeImageWidth () {
-		return ByteBuffer.wrap(this.imageWidth).getInt();
+		return ByteBuffer.wrap(this.imageWidth).order(ByteOrder.LITTLE_ENDIAN).getInt();
 	}
 	
 	/**
@@ -235,7 +236,7 @@ public class ImageBMPHeader {
 	 * @return
 	 */
 	public int decodeImageHeight () {
-		return ByteBuffer.wrap(this.imageHeight).getInt();
+		return ByteBuffer.wrap(this.imageHeight).order(ByteOrder.LITTLE_ENDIAN).getInt();
 	}
 	
 	/**
@@ -244,7 +245,7 @@ public class ImageBMPHeader {
 	 * @return
 	 */
 	public int decodeColorPlanes () {
-		return ByteBuffer.wrap(this.colorPlanes).getShort();
+		return ByteBuffer.wrap(this.colorPlanes).order(ByteOrder.LITTLE_ENDIAN).getShort();
 	}
 	
 	/**
@@ -253,7 +254,7 @@ public class ImageBMPHeader {
 	 * @return
 	 */
 	public int decodeColorDepth () {
-		return ByteBuffer.wrap(this.colorDepth).getShort();
+		return ByteBuffer.wrap(this.colorDepth).order(ByteOrder.LITTLE_ENDIAN).getShort();
 	}
 	
 	/**
@@ -262,7 +263,7 @@ public class ImageBMPHeader {
 	 * @return
 	 */
 	public int decodeCompressionMethod () {
-		return ByteBuffer.wrap(this.compressionMethod).getInt();
+		return ByteBuffer.wrap(this.compressionMethod).order(ByteOrder.LITTLE_ENDIAN).getInt();
 	}
 	
 	/**
@@ -270,7 +271,7 @@ public class ImageBMPHeader {
 	 * @return
 	 */
 	public int decodeImageSize() {
-		return ByteBuffer.wrap(this.imageSize).getInt();
+		return ByteBuffer.wrap(this.imageSize).order(ByteOrder.LITTLE_ENDIAN).getInt();
 	}
 	
 	
@@ -280,7 +281,7 @@ public class ImageBMPHeader {
 	 * @return
 	 */
 	public int decodeHorizontalResolution () {
-		return ByteBuffer.wrap(this.horizontalResolution).getInt();
+		return ByteBuffer.wrap(this.horizontalResolution).order(ByteOrder.LITTLE_ENDIAN).getInt();
 	}
 	
 	
@@ -290,7 +291,7 @@ public class ImageBMPHeader {
 	 * @return
 	 */
 	public int decodeVerticalResolution () {
-		return ByteBuffer.wrap(this.verticalResolution).getInt();
+		return ByteBuffer.wrap(this.verticalResolution).order(ByteOrder.LITTLE_ENDIAN).getInt();
 	}
 	
 	/**
@@ -299,7 +300,7 @@ public class ImageBMPHeader {
 	 * @return
 	 */
 	public int decodePaletteColors () {
-		return ByteBuffer.wrap(this.paletteColors).getInt();
+		return ByteBuffer.wrap(this.paletteColors).order(ByteOrder.LITTLE_ENDIAN).getInt();
 	}
 	
 	/**
@@ -308,7 +309,7 @@ public class ImageBMPHeader {
 	 * @return
 	 */
 	public int decodeImportantColors () {
-		return ByteBuffer.wrap(this.importantColors).getInt();
+		return ByteBuffer.wrap(this.importantColors).order(ByteOrder.LITTLE_ENDIAN).getInt();
 	}
 
 	/**

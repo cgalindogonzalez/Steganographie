@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -17,7 +18,6 @@ public class FileReader {
 	private long fileToHideSize;
 	private byte fileExtensionSize;
 	private String fileExtension; 
-	private Path filePath; 
 	
 	/**
 	 * getter
@@ -91,10 +91,11 @@ public class FileReader {
 	 * @return
 	 * @throws IOException 
 	 */
-	public byte[] getFileInformationToReconstruction(File file) throws IOException {
+	public byte[] getFileInformationToReconstruction(File file, Path path) throws IOException {
 	
 		this.fileToHideSize = file.length();
-		this.fileExtension = Files.probeContentType(this.filePath);
+		this.fileExtension = Files.probeContentType(file.toPath());
+		this.fileExtensionSize = (byte) fileExtension.length();
 		
 		byte[] informationSize = new byte[8];
 		ByteBuffer buf = ByteBuffer.wrap(informationSize);
@@ -202,7 +203,7 @@ public class FileReader {
 		byte[] sizeFileArray = new byte[8];
 		System.arraycopy(b, 0, sizeFileArray, 0, 8);
 		
-		long size = ByteBuffer.wrap(sizeFileArray).getLong();
+		long size = ByteBuffer.wrap(sizeFileArray).order(ByteOrder.LITTLE_ENDIAN).getLong();
 		return size;
 	}
 	

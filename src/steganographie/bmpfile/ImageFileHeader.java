@@ -3,6 +3,7 @@ package steganographie.bmpfile;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 public class ImageFileHeader {
 	
@@ -133,7 +134,7 @@ public class ImageFileHeader {
 	 * @return
 	 */
 	public int decodeSize () {
-		return ByteBuffer.wrap(this.fileSize).getInt();
+		return ByteBuffer.wrap(this.fileSize).order(ByteOrder.LITTLE_ENDIAN).getInt();
 	}
 	
 	
@@ -143,14 +144,11 @@ public class ImageFileHeader {
 	 * @return
 	 */
 	public int decodeOffset () {
-		return ByteBuffer.wrap(this.offset).getInt();
+		return ByteBuffer.wrap(this.offset).order(ByteOrder.LITTLE_ENDIAN).getInt();
 	}
 	
 	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
+	
 	
 	
 }
