@@ -131,7 +131,7 @@ public class FileReader {
 		try {
 			FileInputStream	fis = new FileInputStream(file);
 			BufferedInputStream buffer = new BufferedInputStream(fis);
-			buffer.read(fileByteArray); //read file into bytes[]
+			buffer.read(fileByteArray); 
 			buffer.close();
 			fis.close(); 
 
@@ -174,13 +174,9 @@ public class FileReader {
 		int j= 0;
 		for (int i = 0; i < b.length; i++) {
 			pairOfBits[j] = (byte) (b[i] & 3);
-			//(byte) (b[i]%4);
-			pairOfBits[j+1] = (byte) ((b[i] & 12) >>> 2);
-					//(byte) ((b[i]/4)%4);
+			pairOfBits[j+1] = (byte) ((b[i] & 12) >>> 2);		
 			pairOfBits[j+2] = (byte) ((b[i] & 48) >>> 4);
-					//(byte) ((b[i]/16)%4);
 			pairOfBits[j+3] = (byte) ((b[i] & 192) >>> 6);
-			//(byte) (b[i]/64);	
 			j+= 4;
 		}
 		
@@ -194,22 +190,22 @@ public class FileReader {
 	 */
 	public byte[] getByteArrayFromPairOfBits (byte[] b) {
 		byte[] byteArray = new byte[(b.length)/4];
-		
+		int j = 0;
 		for (int i = 0; i < b.length; i+=4 ) {
 			int b4 = b[i];
 			int b3 = b[i+1];
 			int b2 = b[i+2];
 			int b1 = b[i+3];
-			for (int j = 0; j< byteArray.length; j++) {
-				byteArray[j] = (byte) (b4 + b3*4 + b2*16 + b1*64);
-			}
+			
+			byteArray[j] = (byte) (b4 + (b3 << 2) + (b2 << 4) + (b1 << 6));
+			j++;
 		}
 		
 		return byteArray;	
 	}
 	
 	/**
-	 * get the size of the file from the first eight bytes of the recovered array
+	 * get the size of the file from the first bytes of the recovered array
 	 * @param b
 	 * @return
 	 */
@@ -227,14 +223,15 @@ public class FileReader {
 	 * @return
 	 */
 	public String getFileExtensionFromRecoveredArray (byte[] b) {
-		byte[] extensionFileArray = new byte[8]; // Es 8????
+		byte fileExtensionSize = b[8];
+		byte[] extensionFileArray = new byte[fileExtensionSize];
 		String str = new String (extensionFileArray);
 		
 		return str;
 	}
 	
 	/**
-	 * get the byte array with bytes of the file from the recovered array (that can be longer)
+	 * get the byte array with bytes of the file from the recovered array (that can be longer than the file size)
 	 * @param b
 	 * @param size
 	 * @return
@@ -262,7 +259,7 @@ public class FileReader {
 			FileOutputStream fos = new FileOutputStream(file);
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			bos.write(fileArray);
-			
+			bos.close();
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

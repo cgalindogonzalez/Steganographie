@@ -13,6 +13,14 @@ import steganographie.filetohide.FileReader;
 
 public class Stegano {
 	
+	/**
+	 * 
+	 * @param bmpFilePath
+	 * @param bmpFileName
+	 * @param fileToHidePath
+	 * @param fileToHideName
+	 * @throws IOException
+	 */
 	public void steganoHide(String bmpFilePath, String bmpFileName, String fileToHidePath, String fileToHideName) throws IOException {
 		
 		Path bmpFile = FileSystems.getDefault().getPath(bmpFilePath, bmpFileName);
@@ -22,11 +30,10 @@ public class Stegano {
 		BMPFileReader bmpFileReader = new BMPFileReader();
 		bmpFileReader.readBMPFile(bmpFile.toFile());
 
-
 		//check if the image file is already BMP 24 bits
 		String bmpIdentifier = bmpFileReader.getFileHeader().decodeType();
-		int bitsPerPixel = bmpFileReader.getBmpHeader().decodeImageNumber();
-
+		int bitsPerPixel = bmpFileReader.getBmpHeader().decodeColorDepth();
+		
 		if (BMPIdentifierEnum.getEnums().contains(bmpIdentifier) && (bitsPerPixel == 24)){
 
 			//reckon the maximun size of the file to hide
@@ -71,8 +78,55 @@ public class Stegano {
 		else {
 			System.out.println("The image is not a BMP 24 bits file");
 		}
+	}
+	
+	/**
+	 * 
+	 * @param bmpFilePath
+	 * @param bmpFileName
+	 * @throws IOException
+	 */
+	public void steganoRecover (String bmpFilePath, String bmpFileName) throws IOException {
+		
+		Path bmpFile = FileSystems.getDefault().getPath(bmpFilePath, bmpFileName);
+	
+		BMPFileReader bmpFileReader = new BMPFileReader();
+		bmpFileReader.readBMPFile(bmpFile.toFile());
+		
+		//check if the image file is already BMP 24 bits
+		String bmpIdentifier = bmpFileReader.getFileHeader().decodeType();
 
+		int bitsPerPixel = bmpFileReader.getBmpHeader().decodeColorDepth();
 
+		if (BMPIdentifierEnum.getEnums().contains(bmpIdentifier) && (bitsPerPixel == 24)){
+			
+			byte[] rawImage = bmpFileReader.getBody().getRawBytes();
+			BufferedImage bImage = bmpFileReader.getBody().imageFromByteArray(rawImage);
+			byte[] pairOfBitsToRecoverTheFile = recoverHiddenBytesFromTheImage(bImage);
+			
+			FileReader fileReader = new FileReader();
+			byte[] arrayToRecoverTheFile = fileReader.getByteArrayFromPairOfBits(pairOfBitsToRecoverTheFile);
+			
+			//get the size of the hidden file
+			long fileLehgth = fileReader.getFileSizeFromRecoveredArray(arrayToRecoverTheFile);
+			
+			//get a byte array from the recovered array whose length is the file size (after removing the file information located on the first bytes)
+			byte[] fileArray = fileReader.getFileArrayFromRecoveredArray(arrayToRecoverTheFile, fileLehgth);
+			
+			//get the extension of the hidden file
+			String fileExtension = fileReader.getFileExtensionFromRecoveredArray(arrayToRecoverTheFile);
+			
+			//save the file
+			fileReader.saveFile(fileArray, bmpFilePath, fileExtension);
+			
+			String fileName = "recovered_file." + fileExtension;
+			Path recoveredFile = FileSystems.getDefault().getPath(bmpFilePath, fileName);
+		
+		}
+		
+		else {
+			System.out.println("The image is not a BMP 24 bits file");
+		}
 	}
 
 	/**

@@ -244,7 +244,7 @@ public class ImageBMPHeader {
 	 * @return
 	 */
 	public int decodeColorPlanes () {
-		return ByteBuffer.wrap(this.colorPlanes).getInt();
+		return ByteBuffer.wrap(this.colorPlanes).getShort();
 	}
 	
 	/**
@@ -252,8 +252,8 @@ public class ImageBMPHeader {
 	 * @param colorDepth
 	 * @return
 	 */
-	public int decodeImageNumber () {
-		return ByteBuffer.wrap(this.colorDepth).getInt();
+	public int decodeColorDepth () {
+		return ByteBuffer.wrap(this.colorDepth).getShort();
 	}
 	
 	/**

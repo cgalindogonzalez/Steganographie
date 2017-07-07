@@ -61,51 +61,11 @@ public class Main {
 				System.out.println("Insert the file name of the image");
 				String bmpFileName = sc.nextLine();
 				
-				//GESTIONAR CASOS EN LOS QUE SE INTRODUZCA ALGO INCORRECTO EN ESTOS ULTIMOS CAMPOS!!
-				
-//				String bmpFile = bmpFilePath + System.getProperty("file.separator") + bmpFileName +".bmp";
-//				
-//				BMPFileReader bmpFileReader = new BMPFileReader();
-//				bmpFileReader.readBMPFile(new File(bmpFile));
-//				
-//				//check if the image file is already BMP 24 bits
-//				byte[] headField = bmpFileReader.getFileHeader().getHeaderField();
-//				String bmpIdentifier = bmpFileReader.getFileHeader().getType(headField);
-//
-//				byte[] cDepth = bmpFileReader.getBmpHeader().getColorDepth();
-//				int bitsPerPixel = bmpFileReader.getBmpHeader().getNumberOfBitsPerPixel(cDepth);
-//
-//				if (BMPIdentifierEnum.getEnums().contains(bmpIdentifier) && (bitsPerPixel == 24)){
-//					
-//					//Cuando esté corregido lo de q la imagen sea byte array, habrá que pasarlo aquí a buffered image
-//					BufferedImage bufferedImage = bmpFileReader.getBody().getImage();
-//					byte[] pairOfBitsToRecoverTheFile = bmpFileReader.getBody().recoverHiddenBytesFromTheImage(bufferedImage);
-//					
-//					//COMO AVERIGUAR SI HAY O NO HAY ARCHIVO ESCONDIDO???
-//					FileReader fileReader = new FileReader();
-//					byte[] arrayToRecoverTheFile = fileReader.getByteArrayFromPairOfBits(pairOfBitsToRecoverTheFile);
-//					
-//					//get the size of the hidden file
-//					long fileLehgth = fileReader.getFileSizeFromRecoveredArray(arrayToRecoverTheFile);
-//					
-//					//get a byte array from the recovered array whose length is the file size (after removing the file information located on the first bytes)
-//					byte[] fileArray = fileReader.getFileArrayFromRecoveredArray(arrayToRecoverTheFile, fileLehgth);
-//					
-//					//get the extension of the hidden file
-//					String fileExtension = fileReader.getFileExtensionFromRecoveredArray(arrayToRecoverTheFile);
-//					
-//					//save the file
-//					fileReader.saveFile(fileArray, bmpFilePath, fileExtension);
-//					
-//					System.out.println("You can find the file in :" + System.getProperty("file.separator") + "recovered_file." + fileExtension);
-//					
-//				}
-//				
-//				else {
-//					System.out.println("The image is not a BMP 24 bits file");
-//				}
+				Stegano stegano = new Stegano();
+				stegano.steganoRecover(bmpFilePath, bmpFileName);
 				
 			}
+			
 			
 			//Selection is not 1 or 2
 			else{
